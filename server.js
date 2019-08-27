@@ -3,8 +3,10 @@ const express = require('express')
 const app = express()
 const helmet = require('helmet')
 const bodyParser = require('body-parser')
+//const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const boom = require('express-boom')
+//const passport = require('passport')
 
 //imports .env files
 require('dotenv').config()
@@ -15,6 +17,11 @@ const routes = require('./api/routes/routes')
 //using helmet to secure app
 app.use(helmet());
 
+//initializes passport configuration
+//app.use(passport.initialize());
+//imports conf file holding verification callbacks and things like secret
+//require('./passport-config')(passport);
+
 // using morgan to show the logs in console
 if (process.env.NODE_ENV === 'development') {
     const morgan = require('morgan')
@@ -24,6 +31,8 @@ if (process.env.NODE_ENV === 'development') {
 // using body parser middlewares to parse requests
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
+console.log("server.js origin url :"+ process.env.ORIGIN_URL)
 
 //setting cors config
 app.use(

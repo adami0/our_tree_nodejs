@@ -23,8 +23,15 @@ const register = (req, res) => {
     }, req.body)
 }
 
+const auth = (req, res) => {
+    userModel.auth(response => {
+        res.status(200).send(response)
+    }, req.body)
+}
+
 module.exports = {
     getUsers,
     getUserById,
-    register
+    register,
+    auth
 }

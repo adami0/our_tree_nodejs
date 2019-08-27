@@ -15,4 +15,7 @@ router.get('/:id', userController.getUserById);
 //register user
 router.post('/register', userController.register);
 
+//authenticate user
+router.post('/auth', userController.auth);
+
 module.exports = router;
