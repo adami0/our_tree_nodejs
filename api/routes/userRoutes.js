@@ -10,7 +10,10 @@ const userController = require('./../controllers/userController');
 router.get('/', /*checkAuth,*/ userController.getUsers);
 
 //get user by id
-router.get('/:id', userController.getUserById);
+//router.get('/:id', userController.getUserById);
+
+//get user by email
+router.get('/:email', userController.getUserByEmail);
 
 //register user
 router.post('/register', userController.register);

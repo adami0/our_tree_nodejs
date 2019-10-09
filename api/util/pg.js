@@ -13,7 +13,7 @@ pool.on('connect', () => {
 });
 
 if (process.env.NODE_ENV === 'development') {
-    // dummy function to verify if database connection is establish successfuly
+    // dummy function to verify if database connection is established successfuly
     pool.query('SELECT NOW()', (err, res) => {
         if (err) throw err;
         console.log(res.rows);
