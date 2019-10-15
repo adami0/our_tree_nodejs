@@ -6,9 +6,9 @@ const getTreesByUserId = (cb, id) => {
         console.log('checkModel');
         console.log(id);
         console.log(cb);
-        console.log(res.rows)
+        console.log(res)
         if (err) throw err;
-        cb(res.rows);        
+        cb(res);
     });
 }
 
@@ -20,6 +20,7 @@ const createTree = (cb, data) => {
     })
 }
 
+//updating tree in db
 const updateTree = (cb, data) => {
     pool.query('UPDATE public.tree SET name=$1 WHERE id=$2 AND user_id=$3', [data.name, data.id, data.user_id], (err, res) => {
         if (err) throw err;

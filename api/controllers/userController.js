@@ -18,9 +18,16 @@ const getUserById = (req, res) => {
 };
 
 const getUserByEmail = (req, res) => {
-    userModel.getUserByEmail(response => {
-        res.status(200).send(response)
-    }, req.params.email);
+    if (!res.error) {
+        userModel.getUserByEmail(response => {
+            console.log('response error: ' + response.error);
+            console.log('!response error: ' + !response.error);
+            res.error = false;
+            return res.status(200).send(response)}, req.params.email)
+    } else {
+        res.error = true;
+        return res.status(403).send(response);
+    };
 }
 
 //insert new user in db
@@ -49,13 +56,14 @@ const auth = (req, res) => {
                 private_key,
                 { expiresIn: '10h', algorithm: 'RS256' }
             );
-            console.log("token" + token);
+            console.log("token: " + token);
             response.token = token;
+            res.error = response.error;
             return res.status(200).send(response);
         } else {
             return res.status(403).send(response);
         }
-    }, req.body)
+    }, req.body);
 }
 
 module.exports = {

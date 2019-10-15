@@ -4,7 +4,9 @@ const router = express.Router();
 
 //imports controllers
 const userController = require('./../controllers/userController');
-//const checkAuth = require('./../middlewares/check-auth');
+const checkToken = require('./../middlewares/checkToken');
+const checkUserEmail = require('./../middlewares/checkUserEmail');
+
 
 //get all users
 router.get('/', /*checkAuth,*/ userController.getUsers);
@@ -13,7 +15,7 @@ router.get('/', /*checkAuth,*/ userController.getUsers);
 //router.get('/:id', userController.getUserById);
 
 //get user by email
-router.get('/:email', userController.getUserByEmail);
+router.post('/email/:email', checkToken.checkToken, checkUserEmail.checkUserEmail, userController.getUserByEmail);
 
 //register user
 router.post('/register', userController.register);
