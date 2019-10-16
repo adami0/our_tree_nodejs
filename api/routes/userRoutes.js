@@ -23,4 +23,10 @@ router.post('/register', userController.register);
 //authenticate user
 router.post('/auth', userController.auth);
 
+//authenticate user by checking token in his browser
+router.post('/auth_by_token', checkToken.checkToken, userController.authByToken);
+
+//reserved to admin, it gives him nb of users
+router.post('/nb_users', checkToken.checkToken, userController.getNbOfUsers);
+
 module.exports = router;

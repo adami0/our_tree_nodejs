@@ -10,7 +10,7 @@ let server = require('../server');
 let should = chai.should();
 
 //put the actualized token of the user 'pp' here
-const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBwIiwiaWF0IjoxNTcxMDcxMDY2LCJleHAiOjE1NzExMDcwNjZ9.g8CFg39GHGgXyHFXvVYblGt5ClbTDpebjQf0PLUWRlx15WEQLmeHZRxvD2l0VBTtCfXKXGjSyAUYYO_mKx8G_Q"
+const token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBwIiwiaWF0IjoxNTcxMTg4MTk0LCJleHAiOjE1NzEyMjQxOTR9.hAGCzH2-4auFD3bMSfjXYyr9Y257F9bLxCxWi11br3GWyxXifDRG6NAHoycNmf3ANY3DpePFpCIUoAd9nLukuA"
 
 describe('Simple test suite:', function () {
     it('1 === 1 should be true', function () {

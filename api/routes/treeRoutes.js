@@ -17,6 +17,10 @@ router.post('/post_tree', checkToken.checkToken, checkUserEmail.checkUserEmail, 
 //update tree
 router.put('/update_tree', checkToken.checkToken, checkUserEmail.checkUserEmail, treeController.updateTree);
 
+//reserved to admin, it gives him nb of trees
+router.post('/nb_trees', checkToken.checkToken, treeController.getNbOfTrees);
+
+
 module.exports = router;
 
 

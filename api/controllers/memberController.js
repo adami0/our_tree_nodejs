@@ -1,6 +1,21 @@
 'use strict'
 const memberModel = require('./../models/memberModel');
 
+//reserved to admin
+const getNbOfMembers = (req, res) => {
+    if (res.error === false) {
+        memberModel.getNbOfMembers(response => {
+            if (response.error === false) {
+                res.status(200).send(response);
+            } else {
+                res.status(403).send(response);
+            }
+        }, req.body);
+    } else {
+        res.status(403).send(response);
+    }
+}
+
 const getMemberById = (req, res) => {
     memberModel.getMemberById(response => {
         res.status(200).send(response);
@@ -51,6 +66,7 @@ const getMemberByFirstnameAndLastname = (req, res) => {
 
 
 module.exports = {
+    getNbOfMembers,
     deleteMember,
     getMemberById,
     getAllMembersByTreeId,

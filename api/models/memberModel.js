@@ -1,6 +1,23 @@
 'use strict';
 const pool = require('./../util/pg.js')
 
+//we check if admin is the requester
+const getNbOfMembers = (cb, data) => {
+    pool.query(`SELECT COUNT(id) FROM public.user WHERE email=$1 AND admin=true`, [data.user_data.email], (err, res) => {
+        if (err) throw err;
+        if (res.rows[0].count == 1) {
+            pool.query(`SELECT COUNT(id) FROM public.member`, (err, res) => {
+                if (err) throw err;
+                res.error = false;
+                cb(res);
+            })
+        } else {
+            res.error = true;
+            cb(res);
+        }
+    })
+}
+
 const getMemberById = (cb, id) => {
     console.log('id:' + id);
     pool.query('SELECT * FROM public.member WHERE id = $1', [id], (err, res) => {
@@ -20,7 +37,7 @@ const getAllMembersByTreeId = (cb, data) => {
         AND m.tree_id = $1`, [data.tree_id, data.user_data.email], (err, res) => {
         if (err) throw err;
         console.log(res);
-        //we check an existing member by id in the tree, if none res.rowCount = 0
+        //we check an existing member by id in the tree, if none res.rows[0].count = 0
         if (res.rows[0].count > 1) {
             pool.query(`SELECT m.id
             FROM public.member m 
@@ -46,8 +63,8 @@ const getAllMembersByTreeId = (cb, data) => {
                     cb(res.rows);
                 })
             })
-        } else if (res.rows[0].count = 1) {
-            //retrieving the only (first) member of the tree
+        } else {
+            //retrieving if exists first member of the tree
             pool.query(`SELECT m.*
                 FROM public.member m
                 WHERE m.tree_id = $1`, [data.tree_id], (err, res) => {
@@ -55,8 +72,6 @@ const getAllMembersByTreeId = (cb, data) => {
                 console.log(res);
                 cb(res.rows);
             });
-        } else {
-            cb(res.rows);
         }
     })
 };
@@ -109,6 +124,7 @@ const getMemberByFirstnameAndLastname = (cb, data) => {
 }
 
 module.exports = {
+    getNbOfMembers,
     updateMember,
     deleteMember,
     getMemberById,

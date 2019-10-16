@@ -23,4 +23,7 @@ router.put('/update_member', checkToken.checkToken, memberController.updateMembe
 //delete a member
 router.delete('/delete_member', checkToken.checkToken, memberController.deleteMember);
 
+//reserved to admin, it gives him nb of trees
+router.post('/nb_members', checkToken.checkToken, memberController.getNbOfMembers);
+
 module.exports = router;

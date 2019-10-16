@@ -3,6 +3,21 @@ const userModel = require('./../models/userModel')
 const jwt = require('jsonwebtoken')
 const fs = require('fs');
 
+//reserved to admin
+const getNbOfUsers = (req, res) => {
+    if (res.error === false) {
+        userModel.getNbOfUsers(response => {
+            if (response.error === false) {
+                res.status(200).send(response);
+            } else {
+                res.status(403).send(response);
+            }
+        }, req.body);
+    } else {
+        res.status(403).send(response);
+    }
+}
+
 //get all users
 const getUsers = (req, res) => {
     userModel.getUsers(response => {
@@ -23,7 +38,8 @@ const getUserByEmail = (req, res) => {
             console.log('response error: ' + response.error);
             console.log('!response error: ' + !response.error);
             res.error = false;
-            return res.status(200).send(response)}, req.params.email)
+            return res.status(200).send(response)
+        }, req.params.email)
     } else {
         res.error = true;
         return res.status(403).send(response);
@@ -36,7 +52,7 @@ const register = (req, res) => {
     console.log(req.body);
     console.log('res :' + res);
     userModel.register(response => {
-        if (!response.error) {
+        if (response.error === false) {
             res.status(201).send(response);
         } else {
             res.status(500).send(response);
@@ -47,8 +63,8 @@ const register = (req, res) => {
 //check user authentification
 const auth = (req, res) => {
     userModel.auth(response => {
-        //checking if auth was successful, if true generate token
-        if (!response.error) {
+        //checking if auth was successful, if it's the case generate token
+        if (response.error === false) {
             console.log("resp email: " + response.email);
             let private_key = fs.readFileSync('private.key', 'utf-8');
             const token = jwt.sign(
@@ -58,7 +74,6 @@ const auth = (req, res) => {
             );
             console.log("token: " + token);
             response.token = token;
-            res.error = response.error;
             return res.status(200).send(response);
         } else {
             return res.status(403).send(response);
@@ -66,10 +81,26 @@ const auth = (req, res) => {
     }, req.body);
 }
 
+const authByToken = (req, res) => {
+    if (res.error === false) {
+        userModel.authByToken(response => {
+            if (response.error === false) {
+                return res.status(200).send(response);
+            } else {
+                return res.status(403).send(response);
+            }
+        }, req.body);
+    } else {
+        return res.status(403).send(response);
+    }
+}
+
 module.exports = {
+    getNbOfUsers,
     getUsers,
     getUserById,
     getUserByEmail,
     register,
-    auth
+    auth,
+    authByToken
 }

@@ -1,6 +1,23 @@
 'use strict';
 const pool = require('./../util/pg.js')
 
+//we check if admin is the requester
+const getNbOfTrees = (cb, data) => {
+    pool.query(`SELECT COUNT(id) FROM public.user WHERE email=$1 AND admin=true`, [data.user_data.email], (err, res) => {
+        if (err) throw err;
+        if (res.rows[0].count == 1) {
+            pool.query(`SELECT COUNT(id) FROM public.tree`, (err, res) => {
+                if (err) throw err;
+                res.error = false;
+                cb(res);
+            })
+        } else {
+            res.error = true;
+            cb(res);
+        }
+    })
+}
+
 const getTreesByUserId = (cb, id) => {
     pool.query('SELECT * from public.tree WHERE user_id=$1', [id], (err, res) => {
         console.log('checkModel');
@@ -29,6 +46,7 @@ const updateTree = (cb, data) => {
 }
 
 module.exports = {
+    getNbOfTrees,
     getTreesByUserId,
     createTree,
     updateTree

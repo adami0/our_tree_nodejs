@@ -1,6 +1,21 @@
 'use strict'
 const treeModel = require('./../models/treeModel')
 
+//reserved to admin
+const getNbOfTrees = (req, res) => {
+    if (res.error === false) {
+        treeModel.getNbOfTrees(response => {
+            if (response.error === false) {
+                res.status(200).send(response);
+            } else {
+                res.status(403).send(response);
+            }
+        }, req.body);
+    } else {
+        res.status(403).send(response);
+    }
+}
+
 //get trees by user id
 const getTreesByUserId = (req, res) => {
     if (res.error === false) {
@@ -42,6 +57,7 @@ const updateTree = (req, res) => {
 }
 
 module.exports = {
+    getNbOfTrees,
     getTreesByUserId,
     createTree,
     updateTree
